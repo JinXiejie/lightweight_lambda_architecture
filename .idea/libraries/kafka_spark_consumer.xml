@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="kafka-spark-consumer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/kafka-spark-consumer.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/kafka-spark-consumer.jar!/" />
+    </SOURCES>
+  </library>
+</component>
