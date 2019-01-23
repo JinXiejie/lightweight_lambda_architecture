@@ -11,7 +11,7 @@ import com.jhcomn.lambda.mllib.uhf.{UHFController, UhfFeature, UhfResult, UhfXGB
 import com.jhcomn.lambda.mllib.uw1000.preprocess.UW1000PreprocessUtil
 import com.jhcomn.lambda.packages.IPackage
 import com.jhcomn.lambda.packages.tag.Tag
-import com.jhcomn.lambda.packages.tag.UHF.UhfTagWithResult
+import com.jhcomn.lambda.packages.tag.uhf.UhfTagWithResult
 import ml.dmlc.xgboost4j.scala.spark.XGBoost
 import ml.dmlc.xgboost4j.scala.{Booster, DMatrix}
 import org.apache.hadoop.fs.{FSDataInputStream, FileSystem}
@@ -185,14 +185,17 @@ class UHFController(@transient private val spark: SparkSession,
       val numIter = 80
       val paramMap = List(
         "booster" -> "gbtree",
-        "eval_metric" -> "error",
+        "eval_metric" -> "merror",
         "seed" -> 1024,
-        "eta" -> 0.05f,
-        "max_depth" -> 6,
+        "eta" -> 0.01f,
+        "max_depth" -> 9,
         "min_child_weight" -> 1,
-        "lambda" -> 0.65f,
+        "lambda" -> 50f,
+        "subsample" -> 0.8f,
+        "colsample_bytree" -> 0.7f,
+        "num_class" -> 5,
         "silent" -> 1,
-        "objective" -> "binary:logistic",
+        "objective" -> "multi:softmax",
         "nthread" -> 1
       ).toMap
 

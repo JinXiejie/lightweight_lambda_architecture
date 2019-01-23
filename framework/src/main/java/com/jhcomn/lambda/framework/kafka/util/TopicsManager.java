@@ -1,7 +1,6 @@
 package com.jhcomn.lambda.framework.kafka.util;
 
 import scala.actors.threadpool.Arrays;
-
 import java.util.Collection;
 
 /**

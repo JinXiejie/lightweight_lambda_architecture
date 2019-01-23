@@ -1,7 +1,7 @@
 package com.jhcomn.lambda.packages.result.UHF;
 
 import com.jhcomn.lambda.packages.result.ProcessResultModel;
-import com.jhcomn.lambda.packages.tag.UHF.UhfTagWithResult;
+import com.jhcomn.lambda.packages.tag.uhf.UhfTagWithResult;
 
 import java.util.List;
 

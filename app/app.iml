@@ -15,6 +15,7 @@
     <orderEntry type="library" name="scala-sdk-2.11.8" level="application" />
     <orderEntry type="module" module-name="framework" />
     <orderEntry type="module" module-name="ml-lib" />
+    <orderEntry type="library" name="Maven: org.scala-lang:scala-actors:2.11.8" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.spark:spark-core_2.11:2.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.avro:avro-mapred:hadoop2:1.7.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.avro:avro-ipc:1.7.7" level="project" />
