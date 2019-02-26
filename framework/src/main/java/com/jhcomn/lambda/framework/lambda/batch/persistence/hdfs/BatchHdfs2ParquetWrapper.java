@@ -3,6 +3,7 @@ package com.jhcomn.lambda.framework.lambda.batch.persistence.hdfs;
 import com.jhcomn.lambda.framework.lambda.base.common.constants.ConstantDatas;
 import com.jhcomn.lambda.framework.lambda.base.dispatch.hdfs.Hdfs2ParquetWrapper;
 import com.jhcomn.lambda.framework.lambda.pkg.batch.BatchUpdatePkg;
+import com.jhcomn.lambda.mllib.uhf.preprocess.UHFAnalyze;
 import com.jhcomn.lambda.packages.PackageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ public class BatchHdfs2ParquetWrapper extends Hdfs2ParquetWrapper {
     private static Logger log = LoggerFactory.getLogger(BatchHdfs2ParquetWrapper.class);
 
     private BatchUpdatePkg batchUpdatePkg;
+
+    private UHFAnalyze uhfAnalyze = null;
 
     public BatchHdfs2ParquetWrapper(String date, BatchUpdatePkg pkg) {
         super(date);
@@ -48,6 +51,10 @@ public class BatchHdfs2ParquetWrapper extends Hdfs2ParquetWrapper {
             }
             else if (type.equals(ConstantDatas.UHF)) {
                 System.out.println("BatchHdfs2ParquetWrapper saveOrUpdate&update topic UHF now.");
+                String topic = ConstantDatas.UHF;
+                String key = ConstantDatas.TRAINING;
+                uhfAnalyze = new UHFAnalyze(topic, key);
+                uhfAnalyze.uhfTrain();
                 parquetContext.saveAndUpdate(date, batchUpdatePkg, PackageType.UHF.value(), false, ConstantDatas.TRAINING);
             }
         }

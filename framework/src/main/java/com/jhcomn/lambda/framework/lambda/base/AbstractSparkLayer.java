@@ -160,6 +160,7 @@ public abstract class AbstractSparkLayer implements Closeable {
             spark = buildSparkSession();
 
             if (getLayerName().equals(ConstantDatas.SPEED_LAYER_NAME)) {
+                System.out.println("getLayerName():" + getLayerName());
                 jsc = buildStreamingContext();
                 buildDataConnector();
                 /*
@@ -177,8 +178,10 @@ public abstract class AbstractSparkLayer implements Closeable {
             run();
 
             //start streaming
-            if (getLayerName().equals(ConstantDatas.SPEED_LAYER_NAME) && jsc != null)
+            if (getLayerName().equals(ConstantDatas.SPEED_LAYER_NAME) && jsc != null) {
+                System.out.println("getLayerName():" + getLayerName());
                 jsc.start();
+            }
 
         } catch (Exception e) {
             log.error("SparkSession or StreamingContext创建失败");
