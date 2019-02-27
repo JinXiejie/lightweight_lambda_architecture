@@ -15,7 +15,12 @@ public class uhfTrainTest {
                 "\t\"type\": \"test-UW\",\n" +
                 "\t\"url\": \"http://www.youdiancloud.com/epcbm/biz/app/machineLearn.do?action=analyzeTempFile&fileName=\"\n" +
                 "}";
-//        UHFAnalyze uhfAnalyze = new UHFAnalyze();
-//        uhfAnalyze.uhfTrain(jsonStr);
+
+        String topic = "UHF";
+        String key = "train";
+        UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, key);
+        uhfAnalyze.send(key, topic);
+//        KafkaKeySender sender = KafkaKeySender.getInstance();
+//        sender.Send(key, topic);
     }
 }

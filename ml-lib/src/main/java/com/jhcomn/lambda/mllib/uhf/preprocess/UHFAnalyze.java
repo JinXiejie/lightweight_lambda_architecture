@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
 //import net.sf.json.JSONObject;
 
 public class UHFAnalyze {
-    private KafkaKeySender sender = null;
+    private KafkaKeySender sender = KafkaKeySender.getInstance();
     private KafkaReceiver receiver = null;
-    private static String pythonExePath = "/home/jhcomn/anaconda3/bin/python.exe";
+    private static String pythonExePath = "/home/jhcomn/anaconda3/bin/python";
     private String topic = null;
     private String key = null;
 
