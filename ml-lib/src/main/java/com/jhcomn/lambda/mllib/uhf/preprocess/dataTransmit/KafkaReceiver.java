@@ -105,6 +105,7 @@ public class KafkaReceiver implements KafkaReceiverInterface {
         public void run() {
             consumer.subscribe(Arrays.asList(topic));
             System.out.println("启动线程： "+Thread.currentThread().getName());
+            this.queue = new LinkedBlockingDeque<>();
             while (isContinue) {
                 //每次取100条信息
                 ConsumerRecords<String, String> records = consumer.poll(100);

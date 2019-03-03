@@ -51,7 +51,7 @@ public class UHFAnalyze {
 
         Date strat = new Date();
         long loopTime = 0;
-        while (loopTime <= 5 * 60){//5 mins
+        while (loopTime <= 2 * 60){//2 mins
             if (receiver.topicResult != null){
                 jsonStr = receiver.topicResult;
                 analyzeTopic = receiver.analyzeTopic;
@@ -61,7 +61,7 @@ public class UHFAnalyze {
             loopTime = (nowTime.getTime() - strat.getTime()) / 1000;
         }
         if (receiver.topicResult != null){
-            System.out.println("UHF json串接收超时，超时时间为5分钟.");
+            System.out.println("UHF json串接收超时，超时时间为2分钟.");
         }
     }
 
