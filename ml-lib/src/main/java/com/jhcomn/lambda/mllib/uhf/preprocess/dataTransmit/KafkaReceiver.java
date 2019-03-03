@@ -28,6 +28,9 @@ public class KafkaReceiver implements KafkaReceiverInterface {
 
     private List<ConsumerThread> consumerList = new ArrayList<>();
 
+    public String topicResult = null;
+    public String analyzeTopic = null;
+
     AnalyseTask task = new AnalyseTask();
 
     private KafkaReceiver() {
@@ -58,7 +61,7 @@ public class KafkaReceiver implements KafkaReceiverInterface {
     public void Receive() {
         ArrayList<String> topics = new ArrayList<>();
 //        topics.add(Topics.UW);
-        topics.add("UHF");
+//        topics.add("UHF");
         topics.add("INPUT");
 //        topics.add(Topics.TEV);
 //        topics.add(Topics.INFRARED);
@@ -112,26 +115,24 @@ public class KafkaReceiver implements KafkaReceiverInterface {
                     System.out.println(record.key());
                     System.out.println(record.offset());
                     System.out.println(record.value());
-                    if (taskMap.containsKey(msgId)){
-                        try {
-                            System.out.printf("topic = %s, offset = %d, key = %s, value = %s", record.topic(), record.offset(), record.key(), record.value());
-                            System.out.println();
-                            boolean isSuccess = queue.offer(new AnalyseResult(record.value()));
-                            if (!isSuccess) {
-                                System.out.println("topic = " + topic + "的队列已满");
-                                break;
-                            }
-                            AnalyseResult result = queue.peek();
-                            if (result != null)
-                                queue.poll();
-                            task.result = result;
-                            taskMap.get(msgId).notify();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    try {
+                        System.out.printf("topic = %s, offset = %d, key = %s, value = %s", record.topic(), record.offset(), record.key(), record.value());
+                        System.out.println();
+                        boolean isSuccess = queue.offer(new AnalyseResult(record.value()));
+                        if (!isSuccess) {
+                            System.out.println("topic = " + topic + "的队列已满");
+                            break;
                         }
+                        AnalyseResult result = queue.peek();
+                        if (result != null)
+                            queue.poll();
+                        task.result = result;
+                        topicResult = record.value();
+                        analyzeTopic = record.key();
+//                        taskMap.get(msgId).notify();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    else
-                        System.out.println("分析结果调用失败！");
                 }
             }
         }

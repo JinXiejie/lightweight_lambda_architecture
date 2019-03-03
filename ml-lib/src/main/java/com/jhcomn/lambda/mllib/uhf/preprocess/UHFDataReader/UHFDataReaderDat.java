@@ -24,8 +24,8 @@ public class UHFDataReaderDat {
         if (pvo.datas != null) {
             int[][] datas = pvo.datas;
 //            printArray(datas);
-            System.out.println(datas.length);
-            System.out.println(datas[0].length);
+//            System.out.println(datas.length);
+//            System.out.println(datas[0].length);
             ExtractUhfFeature extractUhfFeature = new ExtractUhfFeature(pvo.datas, pvo.type);
             label = String.valueOf(pvo.type);
             return extractUhfFeature.extractFeature();

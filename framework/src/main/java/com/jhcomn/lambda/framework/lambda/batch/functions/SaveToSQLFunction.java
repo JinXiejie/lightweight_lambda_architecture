@@ -1,6 +1,6 @@
 package com.jhcomn.lambda.framework.lambda.batch.functions;
 
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSONObject;
 import com.jhcomn.lambda.framework.lambda.base.common.constants.ConstantDatas;
 import com.jhcomn.lambda.framework.lambda.base.common.observer.IObservable;
 import com.jhcomn.lambda.framework.lambda.base.common.observer.IObserver;
@@ -21,6 +21,7 @@ import com.jhcomn.lambda.framework.lambda.sync.tag.dispatch.impl.TagSyncDispatch
 import com.jhcomn.lambda.framework.utils.StringUtil;
 import com.jhcomn.lambda.framework.lambda.persistence.hbase.dao.HBaseRowDao;
 import com.jhcomn.lambda.framework.lambda.persistence.hbase.impl.HBaseRowDaoImpl;
+import com.jhcomn.lambda.mllib.uhf.preprocess.UHFAnalyze;
 import com.jhcomn.lambda.packages.IPackage;
 import consumer.kafka.MessageAndMetadata;
 import org.apache.hadoop.conf.Configuration;
@@ -90,6 +91,13 @@ public class SaveToSQLFunction implements VoidFunction2<JavaRDD<MessageAndMetada
             IPackage fetchTagListPkg = new HdfsFetchTagListPkg(ConstantDatas.TAGS, date);
 
             List<MessageAndMetadata> rddList = rdd.collect(); //collect可能会影响性能
+            System.out.println("-------------------UHF分割线-------------------");
+            String topic = "UHF";
+            UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, "train");
+            uhfAnalyze.receive();
+            String jsonStr = uhfAnalyze.jsonStr;
+            uhfAnalyze.uhfTest(jsonStr);
+            System.out.println("-------------------UHF分割线-------------------");
             System.out.println(" Number of records in this batch " + rddList.size());
             for (MessageAndMetadata metadata : rddList) {
                 System.out.println("model key = " + new String(metadata.getKey(), "UTF-8") + ", value = " + new String(metadata.getPayload(), "UTF-8"));
@@ -145,7 +153,8 @@ public class SaveToSQLFunction implements VoidFunction2<JavaRDD<MessageAndMetada
      */
     private void train (IPackage fetchPkg, String date, MessageAndMetadata metadata) throws IOException {
         //解析MessageAndMetadata
-        TrainingRawData rawData = JSONObject.parseObject(metadata.getPayload(), TrainingRawData.class);
+        TrainingRawData rawData = null;
+//        TrainingRawData rawData = JSONObject.parseObject(metadata.getPayload(), TrainingRawData.class);
         String id = rawData.getId(); //表单id，全局唯一
         String uid = rawData.getClientId(); //user id
         String type = rawData.getType(); //data type
@@ -194,7 +203,8 @@ public class SaveToSQLFunction implements VoidFunction2<JavaRDD<MessageAndMetada
      */
     private void test(IPackage fetchPkg, String date, MessageAndMetadata metadata) throws IOException {
         //解析MessageAndMetadata
-        TrainingRawData rawData = JSONObject.parseObject(metadata.getPayload(), TrainingRawData.class);
+        TrainingRawData rawData = null;
+//        TrainingRawData rawData = JSONObject.parseObject(metadata.getPayload(), TrainingRawData.class);
         String id = rawData.getId(); //表单id，全局唯一
         String uid = rawData.getClientId(); //user id
         String type = rawData.getType(); //data type
@@ -244,7 +254,8 @@ public class SaveToSQLFunction implements VoidFunction2<JavaRDD<MessageAndMetada
     private void tagList(IPackage fetchPkg, String date, MessageAndMetadata metadata) throws IOException {
 //        HdfsFetchTagListPkg pkg = (HdfsFetchTagListPkg) fetchPkg;
 //        String rowKey = pkg.getType();
-        TagsRawData rawData = JSONObject.parseObject(metadata.getPayload(), TagsRawData.class);
+        TagsRawData rawData = null;
+//        TagsRawData rawData = JSONObject.parseObject(metadata.getPayload(), TagsRawData.class);
         String id = rawData.getId();
         List<TagsTypeData> typeDatas = rawData.getDatas();
         for (TagsTypeData typeData : typeDatas) {

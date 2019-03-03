@@ -187,7 +187,7 @@
     <orderEntry type="module-library">
       <library name="Maven: kafka.spark.consumer:kafka-spark-consumer:1.0.8">
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/kafka/spark/consumer/kafka-spark-consumer/1.0.8/kafka-spark-consumer-1.0.8.jar!/" />
+          <root url="jar://E:/local_mvn_repository/repository/kafka/spark/consumer/kafka-spark-consumer/1.0.8/kafka-spark-consumer-1.0.8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

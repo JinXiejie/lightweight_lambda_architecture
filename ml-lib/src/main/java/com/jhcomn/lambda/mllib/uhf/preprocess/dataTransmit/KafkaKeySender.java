@@ -17,7 +17,7 @@ public class KafkaKeySender {
     private static final String ACKS_VALUE = "all";//"all", "-1"(Default), "0", "1";
     private static final String Localhost_Id = "10.100.3.88:9092;10.100.3.89:9092;10.100.3.90:9092";
     private static final long LingerTime = 1;
-    private static final String topic = "UHF";
+//    private static final String topic = "UHF";
 
     private static Properties props = new Properties();
     private static volatile KafkaKeySender sender = null;
@@ -44,9 +44,10 @@ public class KafkaKeySender {
         return sender;
     }
 
-    public KafkaKeySender Send( String key, String jsonStr){
+    public KafkaKeySender Send(String topic, String jsonStr){
         // TODO Auto-generated method stub
 //        String jsonStr = topic + "is trained successfully and the model could utilize";
+        String key = "analyze";
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
         ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, jsonStr);
         producer.send(record, new Callback() {

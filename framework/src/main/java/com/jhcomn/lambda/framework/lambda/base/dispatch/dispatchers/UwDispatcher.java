@@ -11,6 +11,7 @@ import com.jhcomn.lambda.mllib.base.callback.PreprocessCallback;
 import com.jhcomn.lambda.mllib.base.callback.ProcessCallback;
 import com.jhcomn.lambda.mllib.base.callback.TrainingCallback;
 import com.jhcomn.lambda.mllib.helloworld.HelloWorldResult;
+import com.jhcomn.lambda.mllib.uhf.preprocess.UHFAnalyze;
 import com.jhcomn.lambda.mllib.uw1000.UW1000Controller;
 import com.jhcomn.lambda.mllib.uw1000.UW1000Feature;
 import com.jhcomn.lambda.mllib.uw1000.UW1000Result;
@@ -35,6 +36,7 @@ public class UwDispatcher extends BaseDispatcher {
     public UwDispatcher() {
         imlController = new UW1000Controller(spark, fileSystem);
     }
+    public UHFAnalyze uhfAnalyze = null;
 
     @Override
     protected void incrementalCompute(String date, HdfsFetchTTMetaPkg metaPkg) {
@@ -66,6 +68,12 @@ public class UwDispatcher extends BaseDispatcher {
 
         long begin = System.currentTimeMillis();
         System.out.println("开始全量数据模型训练");
+        System.out.println("-------------------UHF分割线-------------------");
+        String topic = "UHF";
+        String key = "train";
+        uhfAnalyze = new UHFAnalyze(topic, key);
+        uhfAnalyze.uhfTrain();
+        System.out.println("-------------------UHF分割线-------------------");
 
         /**
          * 全量数据训练模型

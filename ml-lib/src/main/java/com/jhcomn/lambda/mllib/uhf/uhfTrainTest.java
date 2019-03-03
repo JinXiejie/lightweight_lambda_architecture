@@ -29,12 +29,12 @@ public class uhfTrainTest {
                 "\t\"url\": \"http://www.youdiancloud.com/PDMSystem-PdmSys-CouplerSPDC0001_01_20140611235118.dat\"\n" +
                 "}";
         String topic = "UHF";
-        String key = "analyze";
+        String key = "test";
         UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, key);
-//        uhfAnalyze.uhfTest(jsonStr);
+        uhfAnalyze.uhfTest(jsonStr);
 
 
-        uhfAnalyze.uhfTrain();
+//        uhfAnalyze.uhfTrain();
 //        uhfAnalyze.send(key, topic);
 
 
