@@ -1,6 +1,7 @@
 package com.jhcomn.lambda.mllib.uhf.preprocess;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jhcomn.lambda.mllib.uhf.preprocess.UHFDataReader.UHFDataReaderDat;
 import com.jhcomn.lambda.mllib.uhf.preprocess.dataTransmit.AnalyseTask;
 import com.jhcomn.lambda.mllib.uhf.preprocess.dataTransmit.KafkaKeySender;
 import com.jhcomn.lambda.mllib.uhf.preprocess.dataTransmit.KafkaReceiver;
@@ -11,8 +12,10 @@ import java.io.InputStreamReader;
 
 public class UHFAnalyze {
     private KafkaKeySender sender = KafkaKeySender.getInstance();
+    public UHFDataReaderDat uhfDataReaderDat = new UHFDataReaderDat();
     private KafkaReceiver receiver = null;
-    private static String pythonExePath = "/home/jhcomn/anaconda3/bin/python";
+//    private static String pythonExePath = "/home/jhcomn/anaconda3/bin/python";
+    private static String pythonExePath = "E:\\JinXiejie\\Anaconda3\\envs\\tensorflow\\python.exe";
     private String topic = null;
     private String key = null;
 
@@ -46,7 +49,8 @@ public class UHFAnalyze {
     public void uhfTrain() {
         try {
             System.out.println("UHF model is training");
-            String uhfPythonPath = "/usr/local/platformTest/uhfTest/uhf_train.py";
+//            String uhfPythonPath = "/usr/local/platformTest/uhfTest/uhf_train.py";
+            String uhfPythonPath = "E:\\JinXiejie\\UHFuRLData\\uhf_train.py";
             String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key};
             Process pr = Runtime.getRuntime().exec(args);
 
@@ -104,18 +108,25 @@ public class UHFAnalyze {
 //        }
     }
 
-    public void uhfTest(JSONObject json) {
+    public void uhfTest(String jsonStr) {
         try {
-            System.out.println("UHF model is predicting");
-            String uhfPythonPath = "/usr/local/platformTest/uhfTest/uhf_train.py";
-            String uhfTestTopic = json.getString("type");
-            String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key};
+            JSONObject json = JSONObject.parseObject(jsonStr);
+            System.out.println("正在调用UHF模型分析UHF数据");
+//            String uhfPythonPath = "/usr/local/platformTest/uhfTest/uhf_train.py";
+            String uhfPythonPath = "E:\\JinXiejie\\UHFuRLData\\uhf_analyze.py";
+            String topic = json.getString("type");
+            String urlStr = json.getString("url");
+            String key = "test";
+            String fileName = "uhfDat.dat";
+            String savePath = "E:\\JinXiejie\\UHFuRLData";
+            String uhfAnalyzeData = double2String(uhfDataReaderDat.uhfAnalyzeReader(urlStr, fileName, savePath));
+            String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key, uhfAnalyzeData};
             Process pr = Runtime.getRuntime().exec(args);
-
-            BufferedReader in = new BufferedReader(new
-                    InputStreamReader(pr.getInputStream()));
+            System.out.println("runtime is starting.");
+            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
+                System.out.println("hh");
                 System.out.println(line);
             }
             in.close();
@@ -146,5 +157,16 @@ public class UHFAnalyze {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    public String double2String(double[] doubleArray){
+        StringBuilder stringBuilder = new StringBuilder();
+        int len = doubleArray.length;
+        for (int i=0;i<len - 1;i++){
+            stringBuilder.append(String.valueOf(doubleArray[i]));
+            stringBuilder.append(";");
+        }
+        stringBuilder.append(String.valueOf(doubleArray[len - 1]));
+        return stringBuilder.toString();
     }
 }

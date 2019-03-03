@@ -44,8 +44,19 @@ public class UHFPreprocessUtil extends UHFLocalPreprocessUtil {
         Path path = new Path(srcPath);
         UHFDataReaderDat uhfDataReaderDat = new UHFDataReaderDat();
         label = uhfDataReaderDat.label;
-        return uhfDataReaderDat.prpsDataParser(srcPath);
+        return double2String(uhfDataReaderDat.prpsDataParser(srcPath));
 //        return transFeature2XGB(getFeature(path), tag);
+    }
+
+    public String double2String(double[] doubleArray){
+        StringBuilder stringBuilder = new StringBuilder();
+        int len = doubleArray.length;
+        for (int i=0;i<len - 1;i++){
+            stringBuilder.append(String.valueOf(doubleArray[i]));
+            stringBuilder.append(";");
+        }
+        stringBuilder.append(String.valueOf(doubleArray[len - 1]));
+        return stringBuilder.toString();
     }
 
     @Override

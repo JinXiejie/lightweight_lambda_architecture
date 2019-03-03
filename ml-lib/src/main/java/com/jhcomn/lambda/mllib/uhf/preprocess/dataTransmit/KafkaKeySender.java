@@ -17,7 +17,7 @@ public class KafkaKeySender {
     private static final String ACKS_VALUE = "all";//"all", "-1"(Default), "0", "1";
     private static final String Localhost_Id = "10.100.3.88:9092;10.100.3.89:9092;10.100.3.90:9092";
     private static final long LingerTime = 1;
-    private static final String topic = "INPUT";
+    private static final String topic = "UHF";
 
     private static Properties props = new Properties();
     private static volatile KafkaKeySender sender = null;

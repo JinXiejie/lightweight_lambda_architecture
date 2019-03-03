@@ -18,11 +18,11 @@ import java.util.concurrent.LinkedBlockingDeque;
  * Created by jinxiejie on 2017/5/3.
  */
 public class KafkaReceiver implements KafkaReceiverInterface {
-//    private static String Localhost_Id = "10.100.3.88:9092;10.100.3.89:9092;10.100.3.90:9092";
-    private static String Localhost_Id = "127.0.0.1:2181";
+    private static String Localhost_Id = "10.100.3.88:9092;10.100.3.89:9092;10.100.3.90:9092";
+//    private static String Localhost_Id = "127.0.0.1:2181";
     private static Properties props = null;
     private static volatile KafkaReceiver receiver = null;
-    private static final int Pools_Nums = 1;
+    private static final int Pools_Nums = 2;
 
     private volatile boolean isContinue = true;
 
@@ -58,6 +58,7 @@ public class KafkaReceiver implements KafkaReceiverInterface {
     public void Receive() {
         ArrayList<String> topics = new ArrayList<>();
 //        topics.add(Topics.UW);
+        topics.add("UHF");
         topics.add("INPUT");
 //        topics.add(Topics.TEV);
 //        topics.add(Topics.INFRARED);
@@ -107,6 +108,10 @@ public class KafkaReceiver implements KafkaReceiverInterface {
                 for (ConsumerRecord<String, String> record : records) {
                     //record.key()为json串的唯一标识id
                     String msgId = record.key();
+                    System.out.println(record.topic());
+                    System.out.println(record.key());
+                    System.out.println(record.offset());
+                    System.out.println(record.value());
                     if (taskMap.containsKey(msgId)){
                         try {
                             System.out.printf("topic = %s, offset = %d, key = %s, value = %s", record.topic(), record.offset(), record.key(), record.value());

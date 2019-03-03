@@ -51,10 +51,12 @@ public class BatchHdfs2ParquetWrapper extends Hdfs2ParquetWrapper {
             }
             else if (type.equals(ConstantDatas.UHF)) {
                 System.out.println("BatchHdfs2ParquetWrapper saveOrUpdate&update topic UHF now.");
+                System.out.println("-----------------UHF分割线-----------------");
                 String topic = ConstantDatas.UHF;
                 String key = ConstantDatas.TRAINING;
                 uhfAnalyze = new UHFAnalyze(topic, key);
                 uhfAnalyze.uhfTrain();
+                System.out.println("-----------------UHF分割线-----------------");
                 parquetContext.saveAndUpdate(date, batchUpdatePkg, PackageType.UHF.value(), false, ConstantDatas.TRAINING);
             }
         }
