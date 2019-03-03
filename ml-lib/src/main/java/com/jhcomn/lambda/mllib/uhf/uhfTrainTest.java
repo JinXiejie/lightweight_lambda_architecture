@@ -31,11 +31,12 @@ public class uhfTrainTest {
         String topic = "UHF";
         String key = "test";
         UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, key);
+        uhfAnalyze.receive();
         uhfAnalyze.uhfTest(jsonStr);
 
 
 //        uhfAnalyze.uhfTrain();
-//        uhfAnalyze.send(key, topic);
+//        uhfAnalyze.send(topic, "value");
 
 
 //        KafkaReceiver receiver = KafkaReceiver.getInstance();

@@ -15,8 +15,9 @@ public class UHFAnalyze {
     private KafkaKeySender sender = KafkaKeySender.getInstance();
     public UHFDataReaderDat uhfDataReaderDat = new UHFDataReaderDat();
     private KafkaReceiver receiver = null;
-    private static String pythonExePath = "/home/jhcomn/anaconda3/bin/python";
+//    private static String pythonExePath = "/home/jhcomn/anaconda3/bin/python";
 //    private static String pythonExePath = "D:\\ProgramData\\Anaconda2\\envs\\tensorflow_env\\python.exe";
+    private static String pythonExePath = "E:\\JinXiejie\\Anaconda3\\python.exe";
     private String topic = null;
     private String key = null;
     public String jsonStr = null;
@@ -68,8 +69,9 @@ public class UHFAnalyze {
     public void uhfTrain() {
         try {
             System.out.println("UHF model is training");
-            String uhfPythonPath = "/usr/local/platformTest/uhfTest/uhf_train.py";
+//            String uhfPythonPath = "/usr/local/platformTest/uhfTest/uhf_train.py";
 //            String uhfPythonPath = "E:\\prps_tensorflow\\Code\\uhf_train.py";
+            String uhfPythonPath = "E:\\JinXiejie\\UHFUrlData\\uhf_train.py";
             String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key};
             Process pr = Runtime.getRuntime().exec(args);
 
@@ -131,14 +133,16 @@ public class UHFAnalyze {
         try {
             System.out.println("正在调用UHF模型分析UHF数据");
             JSONObject json = JSONObject.fromObject(jsonStr);
-            String uhfPythonPath = "/usr/local/platformTest/uhfTest/uhf_analyze.py";
+//            String uhfPythonPath = "/usr/local/platformTest/uhfTest/uhf_analyze.py";
 //            String uhfPythonPath = "E:\\prps_tensorflow\\Code\\uhf_analyze.py";
+            String uhfPythonPath = "E:\\JinXiejie\\UHFUrlData\\uhf_analyze.py";
             String topic = json.getString("type");
             String urlStr = json.getString("url");
             String key = "test";
             String fileName = "uhfDat.dat";
-            String savePath = "/usr/local/platformTest/uhfTest";
+//            String savePath = "/usr/local/platformTest/uhfTest";
 //            String savePath = "E:\\prps_tensorflow\\UHFUrlData";
+            String savePath = "E:\\JinXiejie\\UHFUrlData";
             String uhfAnalyzeData = double2String(uhfDataReaderDat.uhfAnalyzeReader(urlStr, fileName, savePath));
             String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key, uhfAnalyzeData};
             Process pr = Runtime.getRuntime().exec(args);

@@ -61,7 +61,7 @@ public class KafkaReceiver implements KafkaReceiverInterface {
     public void Receive() {
         ArrayList<String> topics = new ArrayList<>();
 //        topics.add(Topics.UW);
-//        topics.add("UHF");
+        topics.add("UHF");
         topics.add("INPUT");
 //        topics.add(Topics.TEV);
 //        topics.add(Topics.INFRARED);
@@ -104,12 +104,14 @@ public class KafkaReceiver implements KafkaReceiverInterface {
 
         public void run() {
             consumer.subscribe(Arrays.asList(topic));
+            this.queue = new LinkedBlockingDeque<>();
             System.out.println("启动线程： "+Thread.currentThread().getName());
             this.queue = new LinkedBlockingDeque<>();
             while (isContinue) {
                 //每次取100条信息
                 ConsumerRecords<String, String> records = consumer.poll(100);
                 for (ConsumerRecord<String, String> record : records) {
+                    System.out.println("come in.");
                     //record.key()为json串的唯一标识id
                     String msgId = record.key();
                     System.out.println(record.topic());
