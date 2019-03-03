@@ -10,6 +10,7 @@ import com.jhcomn.lambda.framework.lambda.pkg.meta.TestDataTable;
 import com.jhcomn.lambda.framework.spark.base.SparkBaseManager;
 import com.jhcomn.lambda.framework.lambda.persistence.hbase.dao.HBaseTableDao;
 import com.jhcomn.lambda.framework.lambda.persistence.hbase.impl.HBaseTableDaoImpl;
+import com.jhcomn.lambda.mllib.uhf.preprocess.UHFAnalyze;
 import consumer.kafka.ProcessedOffsetManager;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
@@ -87,6 +88,14 @@ public class SpeedLayer extends AbstractSparkLayer {
                 .getPartitionOffset(kafkaStream);
 
         Configuration hadoopConf = SparkBaseManager.buildHadoopConfiguration();
+
+        System.out.println("-------------------UHF分割线-------------------");
+        String topic = "UHF";
+        UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, "train");
+        uhfAnalyze.receive();
+        String jsonStr = uhfAnalyze.jsonStr;
+        uhfAnalyze.uhfTest(jsonStr);
+        System.out.println("-------------------UHF分割线-------------------");
 
         System.out.println("kafka stream saveOrUpdate to HBase");
         //application logic begin
