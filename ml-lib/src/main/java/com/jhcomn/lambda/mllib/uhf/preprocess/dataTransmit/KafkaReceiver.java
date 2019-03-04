@@ -111,7 +111,6 @@ public class KafkaReceiver implements KafkaReceiverInterface {
                 //每次取100条信息
                 ConsumerRecords<String, String> records = consumer.poll(100);
                 for (ConsumerRecord<String, String> record : records) {
-                    System.out.println("come in.");
                     //record.key()为json串的唯一标识id
                     String msgId = record.key();
                     System.out.println(record.topic());

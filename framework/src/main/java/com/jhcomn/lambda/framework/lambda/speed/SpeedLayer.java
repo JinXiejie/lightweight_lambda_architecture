@@ -93,8 +93,8 @@ public class SpeedLayer extends AbstractSparkLayer {
         String topic = "UHF";
         UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, "train");
         uhfAnalyze.receive();
-        String jsonStr = uhfAnalyze.jsonStr;
-        uhfAnalyze.uhfTest(jsonStr);
+//        String jsonStr = uhfAnalyze.jsonStr;
+//        uhfAnalyze.uhfTest(jsonStr);
         System.out.println("-------------------UHF分割线-------------------");
 
         System.out.println("kafka stream saveOrUpdate to HBase");

@@ -73,6 +73,7 @@ public class UHFDataReaderDat {
 
     public double[] uhfAnalyzeReader(String urlStr,String fileName,String savePath){
         try {
+            System.out.println("uhfAnalyzeReader urlStr: " + urlStr);
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             //设置超时间为3秒

@@ -91,13 +91,13 @@ public class SaveToSQLFunction implements VoidFunction2<JavaRDD<MessageAndMetada
             IPackage fetchTagListPkg = new HdfsFetchTagListPkg(ConstantDatas.TAGS, date);
 
             List<MessageAndMetadata> rddList = rdd.collect(); //collect可能会影响性能
-            System.out.println("-------------------UHF分割线-------------------");
-            String topic = "UHF";
-            UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, "train");
-            uhfAnalyze.receive();
-            String jsonStr = uhfAnalyze.jsonStr;
-            uhfAnalyze.uhfTest(jsonStr);
-            System.out.println("-------------------UHF分割线-------------------");
+//            System.out.println("-------------------UHF分割线-------------------");
+//            String topic = "UHF";
+//            UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, "train");
+//            uhfAnalyze.receive();
+//            String jsonStr = uhfAnalyze.jsonStr;
+//            uhfAnalyze.uhfTest(jsonStr);
+//            System.out.println("-------------------UHF分割线-------------------");
             System.out.println(" Number of records in this batch " + rddList.size());
             for (MessageAndMetadata metadata : rddList) {
                 System.out.println("model key = " + new String(metadata.getKey(), "UTF-8") + ", value = " + new String(metadata.getPayload(), "UTF-8"));
