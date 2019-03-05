@@ -7,6 +7,7 @@ import com.jhcomn.lambda.mllib.uhf.preprocess.dataTransmit.KafkaKeySender;
 import com.jhcomn.lambda.mllib.uhf.preprocess.dataTransmit.KafkaReceiver;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Date;
 import net.sf.json.JSONObject;
@@ -50,22 +51,28 @@ public class UHFAnalyze {
         receiver = KafkaReceiver.getInstance();
         receiver.Receive();
 
+//        jsonStr = receiver.topicResult;
+//        String UHFUrlMsg = receiver.topicResult;
+//        System.out.println("receive UHFUrlMsg: " + UHFUrlMsg);
+//        analyzeTopic = receiver.analyzeTopic;
+//        uhfTest(UHFUrlMsg);
         Date strat = new Date();
         long loopTime = 0;
-        while (loopTime <= 2 * 60){//2 mins
+        while (loopTime <= 2 * 60){//30s
             if (receiver.topicResult != null){
                 jsonStr = receiver.topicResult;
-                String UHFUrlMsg = receiver.topicResult;
-                System.out.println("receive UHFUrlMsg: " + UHFUrlMsg);
+                String uhfMsg = receiver.topicResult;
+                System.out.println("receive UHFUrlMsg: " + uhfMsg);
                 analyzeTopic = receiver.analyzeTopic;
-                uhfTest(UHFUrlMsg);
+                uhfTest(uhfMsg);
+                receiver.topicResult = null;
                 break;
             }
             Date nowTime = new Date();
             loopTime = (nowTime.getTime() - strat.getTime()) / 1000;
         }
         if (receiver.topicResult != null){
-            System.out.println("UHF json串接收超时，超时时间为2分钟.");
+            System.out.println("UHF json串接收超时，超时时间为30秒.");
         }
     }
 
@@ -92,44 +99,6 @@ public class UHFAnalyze {
             e.printStackTrace();
         }
 
-//        try {
-//            if (key.equals("train")) {
-//                System.out.println("UHF model is training");
-//
-//                String uhfPythonPath = "E:\\prps_tensorflow\\Code\\uhf_train.py";
-//                String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key};
-//                Process pr = Runtime.getRuntime().exec( args);
-//
-//                BufferedReader in = new BufferedReader(new
-//                        InputStreamReader(pr.getInputStream()));
-//                String line;
-//                while ((line = in.readLine()) != null) {
-//                    System.out.println(line);
-//                }
-//                in.close();
-//                pr.waitFor();
-//                System.out.println("UHF model train successfully");
-//            }
-//            if (key.equals("test")){
-//                System.out.println("UHF model is predicting");
-//                String uhfPythonPath = "E:\\prps_tensorflow\\Code\\uhf_train.py";
-//                String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key};
-//                Process pr = Runtime.getRuntime().exec( args);
-//
-//                BufferedReader in = new BufferedReader(new
-//                        InputStreamReader(pr.getInputStream()));
-//                String line;
-//                while ((line = in.readLine()) != null) {
-//                    System.out.println(line);
-//                }
-//                in.close();
-//                pr.waitFor();
-//                System.out.println("UHF model predict successfully");
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     public void uhfTest(String urlStr) {
@@ -149,23 +118,28 @@ public class UHFAnalyze {
 //            String savePath = "E:\\JinXiejie\\UHFUrlData";
             System.out.println("uhfTest urlStr: " + urlStr);
             double[] featureVector = uhfDataReaderDat.uhfAnalyzeReader(urlStr, fileName, savePath);
-            String uhfAnalyzeData = double2String(featureVector);
-            String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key, uhfAnalyzeData};
-            Process pr = Runtime.getRuntime().exec(args);
-            System.out.println("runtime is starting.");
-            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            String line;
-            String UHFAnalyzeRes = null;
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
-                UHFAnalyzeRes = labelIntoType(line);
-            }
+            if (featureVector != null && featureVector.length > 0) {
+                String uhfAnalyzeData = double2String(featureVector);
+                String[] args = new String[]{pythonExePath, uhfPythonPath, topic, key, uhfAnalyzeData};
+                Process pr = Runtime.getRuntime().exec(args);
+                System.out.println("runtime is starting.");
+                BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line;
+                String UHFAnalyzeRes = null;
+                while ((line = in.readLine()) != null) {
+                    System.out.println(line);
+                    UHFAnalyzeRes = labelIntoType(line);
+                }
 
-            System.out.println("UHF数据分析结束并发送分析结果");
-            System.out.println("UHF数据分析结果：" + UHFAnalyzeRes);
-            send(topic, UHFAnalyzeRes);
-            in.close();
-            pr.waitFor();
+                System.out.println("UHF数据分析结束并发送分析结果");
+                System.out.println("UHF数据分析结果：" + UHFAnalyzeRes);
+                send(topic, UHFAnalyzeRes);
+                in.close();
+                pr.waitFor();
+            }
+            else {
+                System.out.println("UHF特征提取失败.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -193,7 +167,7 @@ public class UHFAnalyze {
 //        }
     }
 
-    public String labelIntoType(String label){
+    private String labelIntoType(String label){
         int labelInt = Integer.parseInt(label);
         if (labelInt == 1)
             return "颗粒放电";

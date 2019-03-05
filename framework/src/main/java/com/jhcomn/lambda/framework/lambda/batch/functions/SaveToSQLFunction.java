@@ -36,9 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * kafka数据源转存于
@@ -55,6 +53,7 @@ public class SaveToSQLFunction implements VoidFunction2<JavaRDD<MessageAndMetada
     private IObservable observable = null;
 
     private Configuration hadoopConf = null;
+    private HashSet<Integer> idSet = new HashSet<>();
 
     //tag dispatcher
     private ITagSyncDispatcher tagSyncDispatcher = null;
@@ -83,6 +82,16 @@ public class SaveToSQLFunction implements VoidFunction2<JavaRDD<MessageAndMetada
 
     @Override
     public void call(JavaRDD<MessageAndMetadata> rdd, Time time) throws Exception {
+        rdd = null;
+
+        System.out.println("-------------------UHF call-------------------");
+        String topic = "UHF";
+        UHFAnalyze uhfAnalyze = new UHFAnalyze(topic, "train");
+        uhfAnalyze.receive();
+//        String jsonStr = uhfAnalyze.jsonStr;
+//        uhfAnalyze.uhfTest(jsonStr);
+        System.out.println("-------------------UHF call-------------------");
+
         if (rdd != null && !rdd.isEmpty()) {
             String date = StringUtil.DateToString(new Date(), "yyyy-MM-dd HH:mm:ss");
             //hdfs

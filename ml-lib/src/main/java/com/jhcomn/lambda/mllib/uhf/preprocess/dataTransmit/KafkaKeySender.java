@@ -48,8 +48,9 @@ public class KafkaKeySender {
         // TODO Auto-generated method stub
 //        String jsonStr = topic + "is trained successfully and the model could utilize";
         String key = "analyze";
+        String analyzeTopic = topic + "-RESULT";
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, jsonStr);
+        ProducerRecord<String, String> record = new ProducerRecord<>(analyzeTopic, key, jsonStr);
         producer.send(record, new Callback() {
             @Override
             public void onCompletion(RecordMetadata metadata, Exception e) {

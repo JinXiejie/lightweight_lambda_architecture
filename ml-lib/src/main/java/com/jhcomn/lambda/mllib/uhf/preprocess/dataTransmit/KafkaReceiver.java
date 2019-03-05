@@ -61,7 +61,7 @@ public class KafkaReceiver implements KafkaReceiverInterface {
     public void Receive() {
         ArrayList<String> topics = new ArrayList<>();
 //        topics.add(Topics.UW);
-        topics.add("UHF");
+//        topics.add("UHF");
         topics.add("INPUT");
 //        topics.add(Topics.TEV);
 //        topics.add(Topics.INFRARED);
@@ -82,8 +82,7 @@ public class KafkaReceiver implements KafkaReceiverInterface {
         taskMap.put(task.id, task);
     }
 
-    public class ConsumerThread extends Thread
-    {
+    public class ConsumerThread extends Thread {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         public String topic;
 
@@ -113,11 +112,8 @@ public class KafkaReceiver implements KafkaReceiverInterface {
                 for (ConsumerRecord<String, String> record : records) {
                     //record.key()为json串的唯一标识id
                     String msgId = record.key();
-                    System.out.println(record.topic());
-                    System.out.println(record.key());
-                    System.out.println(record.offset());
-                    System.out.println(record.value());
                     try {
+//                        Thread.sleep(10000L);
                         System.out.printf("topic = %s, offset = %d, key = %s, value = %s", record.topic(), record.offset(), record.key(), record.value());
                         System.out.println();
                         boolean isSuccess = queue.offer(new AnalyseResult(record.value()));

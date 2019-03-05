@@ -101,12 +101,24 @@ public class UHFDataReaderDat {
             System.out.println("info: " + url + " download successfully.");
 
             System.out.println("Extracting UHF feature and get the feature vector.");
-            String filePath = savePath + "\\" + fileName;
-            return prpsDataParser(filePath);
+//            String filePath = savePath + "\\" + fileName;
+            String filePath = savePath + "/" + fileName;
+            double[] featureVector = prpsDataParser(filePath);
+            boolean isDelete = delFile(filePath);
+            if (isDelete)
+                return featureVector;
         }catch (Exception e){
             e.printStackTrace();
         }
         return null;
+    }
+
+    private boolean delFile(String filePath){
+        File file = new File(filePath);
+        if(file.exists() && file.isFile())
+            if (file.delete())
+                return true;
+        return false;
     }
 
     /**

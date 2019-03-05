@@ -2,6 +2,7 @@ package com.jhcomn.lambda.app.speed;
 
 import com.jhcomn.lambda.app.utils.PropertyUtil;
 import com.jhcomn.lambda.framework.lambda.speed.SpeedLayer;
+import com.jhcomn.lambda.mllib.uhf.preprocess.UHFAnalyze;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
